@@ -1,4 +1,4 @@
-﻿using Application.Abstractions.Messaging;
+using Application.Abstractions.Messaging;
 using Microsoft.Extensions.Logging;
 using Serilog.Context;
 using SharedKernel;
@@ -17,13 +17,19 @@ internal static class LoggingDecorator
         {
             string commandName = typeof(TCommand).Name;
 
-            logger.LogInformation("Processing command {Command}", commandName);
+            if (logger.IsEnabled(LogLevel.Information))
+            {
+                logger.LogInformation("Processing command {Command}", commandName);
+            }
 
             Result<TResponse> result = await innerHandler.Handle(command, cancellationToken);
 
             if (result.IsSuccess)
             {
-                logger.LogInformation("Completed command {Command}", commandName);
+                if (logger.IsEnabled(LogLevel.Information))
+                {
+                    logger.LogInformation("Completed command {Command}", commandName);
+                }
             }
             else
             {
@@ -47,13 +53,19 @@ internal static class LoggingDecorator
         {
             string commandName = typeof(TCommand).Name;
 
-            logger.LogInformation("Processing command {Command}", commandName);
+            if(logger.IsEnabled(LogLevel.Information))
+            {
+                logger.LogInformation("Processing command {Command}", commandName);
+            }
 
             Result result = await innerHandler.Handle(command, cancellationToken);
 
             if (result.IsSuccess)
             {
-                logger.LogInformation("Completed command {Command}", commandName);
+                if (logger.IsEnabled(LogLevel.Information))
+                {
+                    logger.LogInformation("Completed command {Command}", commandName);
+                }
             }
             else
             {
@@ -77,13 +89,19 @@ internal static class LoggingDecorator
         {
             string queryName = typeof(TQuery).Name;
 
-            logger.LogInformation("Processing query {Query}", queryName);
+            if(logger.IsEnabled(LogLevel.Information))
+            {
+                logger.LogInformation("Processing query {Query}", queryName);
+            }
 
             Result<TResponse> result = await innerHandler.Handle(query, cancellationToken);
 
             if (result.IsSuccess)
             {
-                logger.LogInformation("Completed query {Query}", queryName);
+                if (logger.IsEnabled(LogLevel.Information))
+                {
+                    logger.LogInformation("Completed query {Query}", queryName);
+                }
             }
             else
             {
