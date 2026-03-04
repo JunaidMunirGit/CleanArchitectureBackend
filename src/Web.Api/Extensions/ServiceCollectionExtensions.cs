@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 //using Microsoft.OpenApi.Models;
 
 namespace Web.Api.Extensions;
@@ -43,5 +43,30 @@ internal static class ServiceCollectionExtensions
         });
 
         return services;
+
+
+
+        // Source - https://stackoverflow.com/a/79835686
+        // Posted by Nermin, modified by community. See post 'Timeline' for change history
+        // Retrieved 2026-03-04, License - CC BY-SA 4.0
+
+        //services.AddSwaggerGen(options =>
+        //{
+
+        //    options.AddSecurityDefinition("bearer", new OpenApiSecurityScheme
+        //    {
+        //        Type = SecuritySchemeType.Http,
+        //        Scheme = "bearer",
+        //        BearerFormat = "JWT",
+        //        Description = "JWT Authorization header using the Bearer scheme."
+        //    });
+
+        //    options.AddSecurityRequirement(document => new OpenApiSecurityRequirement
+        //    {
+        //        [new OpenApiSecuritySchemeReference("bearer", document)] = []
+        //    });
+        //});
+        //return services;
+
     }
 }
