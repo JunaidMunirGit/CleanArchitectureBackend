@@ -29,6 +29,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerWithUi();
 
     app.ApplyMigrations();
+
+    await app.SeedProductsAsync();
 }
 
 app.MapHealthChecks("health", new HealthCheckOptions

@@ -1,8 +1,10 @@
-﻿using Application.Abstractions.Data;
+using Application.Abstractions.Data;
+using Domain.Products;
 using Domain.Todos;
 using Domain.Users;
 using Infrastructure.DomainEvents;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using SharedKernel;
 
 namespace Infrastructure.Database;
@@ -15,6 +17,33 @@ public sealed class ApplicationDbContext(
     public DbSet<User> Users { get; set; }
 
     public DbSet<TodoItem> TodoItems { get; set; }
+
+    public DbSet<Product> Products { get; set; }
+
+    public DbSet<Category> Categories { get; set; }
+
+    public DbSet<Brand> Brands { get; set; }
+
+    public DbSet<UnitOfMeasure> UnitOfMeasures { get; set; }
+
+    public DbSet<TaxCategory> TaxCategories { get; set; }
+
+    public DbSet<Branch> Branches { get; set; }
+
+    public DbSet<ProductBarcode> ProductBarcodes { get; set; }
+
+    public DbSet<ProductPrice> ProductPrices { get; set; }
+
+    public async Task<ITransaction> BeginTransactionAsync(CancellationToken cancellationToken = default)
+    {
+        IDbContextTransaction efTransaction = await Database.BeginTransactionAsync(cancellationToken);
+        return new EfTransactionAdapter(efTransaction);
+    }
+
+    public void SetProductRowVersionOriginal(Product product, byte[] rowVersion)
+    {
+        Entry(product).Property(p => p.RowVersion).OriginalValue = rowVersion;
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -58,5 +87,16 @@ public sealed class ApplicationDbContext(
             .ToList();
 
         await domainEventsDispatcher.DispatchAsync(domainEvents);
+    }
+
+    private sealed class EfTransactionAdapter(IDbContextTransaction transaction) : ITransaction
+    {
+        public Task CommitAsync(CancellationToken cancellationToken = default) =>
+            transaction.CommitAsync(cancellationToken);
+
+        public Task RollbackAsync(CancellationToken cancellationToken = default) =>
+            transaction.RollbackAsync(cancellationToken);
+
+        public ValueTask DisposeAsync() => transaction.DisposeAsync();
     }
 }
