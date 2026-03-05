@@ -25,6 +25,12 @@ public static class ProductErrors
     public static Error CategoryNotFound(Guid id) =>
         Error.NotFound("Product.CategoryNotFound", $"Category with id '{id}' was not found.");
 
+    public static Error UnitOfMeasureNotFound(Guid id) =>
+        Error.NotFound("Product.UnitOfMeasureNotFound", $"Unit of measure with id '{id}' was not found.");
+
+    public static Error TaxCategoryNotFound(Guid id) =>
+        Error.NotFound("Product.TaxCategoryNotFound", $"Tax category with id '{id}' was not found.");
+
     public static Error BranchNotFound(Guid id) =>
         Error.NotFound("Product.BranchNotFound", $"Branch with id '{id}' was not found.");
 }

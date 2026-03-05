@@ -39,6 +39,20 @@ internal sealed class CreateProductCommandHandler(
             return Result.Failure<Guid>(ProductErrors.CategoryNotFound(command.CategoryId));
         }
 
+        bool unitExists = await context.UnitOfMeasures
+            .AnyAsync(u => u.Id == command.UnitOfMeasureId, cancellationToken);
+        if (!unitExists)
+        {
+            return Result.Failure<Guid>(ProductErrors.UnitOfMeasureNotFound(command.UnitOfMeasureId));
+        }
+
+        bool taxCategoryExists = await context.TaxCategories
+            .AnyAsync(t => t.Id == command.TaxCategoryId, cancellationToken);
+        if (!taxCategoryExists)
+        {
+            return Result.Failure<Guid>(ProductErrors.TaxCategoryNotFound(command.TaxCategoryId));
+        }
+
         Guid? createdBy = userContext.UserId;
         DateTime utcNow = dateTimeProvider.UtcNow;
 
