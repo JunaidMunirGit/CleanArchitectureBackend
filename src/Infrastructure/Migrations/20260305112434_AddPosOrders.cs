@@ -50,7 +50,6 @@ public partial class AddPosOrders : Migration
             });
 
         migrationBuilder.CreateTable(
-        migrationBuilder.CreateTable(
             name: "order_lines",
             schema: "dbo",
             columns: table => new
