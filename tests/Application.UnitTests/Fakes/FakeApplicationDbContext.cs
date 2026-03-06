@@ -1,4 +1,5 @@
 using Application.Abstractions.Data;
+using Domain.Orders;
 using Domain.Products;
 using Domain.Todos;
 using Domain.Users;
@@ -27,6 +28,10 @@ public sealed class FakeApplicationDbContext : DbContext, IApplicationDbContext
     public DbSet<Branch> Branches => Set<Branch>();
     public DbSet<ProductBarcode> ProductBarcodes => Set<ProductBarcode>();
     public DbSet<ProductPrice> ProductPrices => Set<ProductPrice>();
+    public DbSet<Order> Orders => Set<Order>();
+    public DbSet<OrderLine> OrderLines => Set<OrderLine>();
+    public DbSet<OrderPayment> OrderPayments => Set<OrderPayment>();
+    public DbSet<ProductInventory> ProductInventories => Set<ProductInventory>();
 
     public Task<ITransaction> BeginTransactionAsync(CancellationToken cancellationToken = default) =>
         Task.FromResult<ITransaction>(new NoOpTransaction());
@@ -84,6 +89,24 @@ public sealed class FakeApplicationDbContext : DbContext, IApplicationDbContext
         {
             b.HasKey(e => e.Id);
             b.HasOne(e => e.Branch).WithMany().HasForeignKey(e => e.BranchId).IsRequired(false);
+        });
+        modelBuilder.Entity<Order>(b =>
+        {
+            b.HasKey(e => e.Id);
+            b.HasMany(e => e.Lines).WithOne(x => x.Order).HasForeignKey(x => x.OrderId);
+            b.HasMany(e => e.Payments).WithOne(x => x.Order).HasForeignKey(x => x.OrderId);
+        });
+        modelBuilder.Entity<OrderLine>(b =>
+        {
+            b.HasKey(e => e.Id);
+        });
+        modelBuilder.Entity<OrderPayment>(b =>
+        {
+            b.HasKey(e => e.Id);
+        });
+        modelBuilder.Entity<ProductInventory>(b =>
+        {
+            b.HasKey(e => e.ProductId);
         });
     }
 

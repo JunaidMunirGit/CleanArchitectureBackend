@@ -11,6 +11,8 @@ internal sealed class PermissionProvider
         "POS.Products:read",
         "POS.Products:write",
         "POS.Products:bulk",
+        "POS.Orders:write",
+        "POS.Reports:read",
         "users:access",
     };
 

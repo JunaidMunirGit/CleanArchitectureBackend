@@ -1,4 +1,5 @@
 using Application.Abstractions.Data;
+using Domain.Orders;
 using Domain.Products;
 using Domain.Todos;
 using Domain.Users;
@@ -33,6 +34,14 @@ public sealed class ApplicationDbContext(
     public DbSet<ProductBarcode> ProductBarcodes { get; set; }
 
     public DbSet<ProductPrice> ProductPrices { get; set; }
+
+    public DbSet<Order> Orders { get; set; }
+
+    public DbSet<OrderLine> OrderLines { get; set; }
+
+    public DbSet<OrderPayment> OrderPayments { get; set; }
+
+    public DbSet<ProductInventory> ProductInventories { get; set; }
 
     public async Task<ITransaction> BeginTransactionAsync(CancellationToken cancellationToken = default)
     {

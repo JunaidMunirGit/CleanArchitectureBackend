@@ -17,6 +17,10 @@ public interface IApplicationDbContext
     DbSet<Branch> Branches { get; }
     DbSet<ProductBarcode> ProductBarcodes { get; }
     DbSet<ProductPrice> ProductPrices { get; }
+    DbSet<Domain.Orders.Order> Orders { get; }
+    DbSet<Domain.Orders.OrderLine> OrderLines { get; }
+    DbSet<Domain.Orders.OrderPayment> OrderPayments { get; }
+    DbSet<Domain.Orders.ProductInventory> ProductInventories { get; }
 
     Task<ITransaction> BeginTransactionAsync(CancellationToken cancellationToken = default);
 
