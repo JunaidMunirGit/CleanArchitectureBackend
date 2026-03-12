@@ -1,6 +1,6 @@
 using SharedKernel;
 
-namespace Application.Orders.Create;
+namespace Domain.Orders;
 
 public static class OrderErrors
 {
